@@ -1,1 +1,94 @@
+import matplotlib.pyplot as plt
+import math
+import random
+
+import pandas as pd 
+import networkx as nx
+
+##A
+def rand_network(n,p):
+    G = nx.Graph()
+    for i in range(0, n):
+        G.add_node(i)
+    for i in range(0,n):
+        for j in range(i+1, n):
+            if (random.uniform(0, 1) <= p) :
+                G.add_edge(i,j)
+                
+    return G
+
+##B
+G_1 = rand_network(500,0.01)
+nx.draw(G_1, node_size = 1, width = 0.1, pos=nx.random_layout(G_1))
+plt.show()
+
+degrees = [G_1.degree(n) for n in G_1.nodes()]
+plt.hist(degrees)
+plt.show()
+
+##C
+##This part was noted since it may take long time to operate
+"""
+L = []
+for i in range(500):
+    G = rand_network(10000,0.001)
+    N = G.number_of_edges()
+    print(N)
+    L.append(N)
+plt.hist(L)
+plt.show()
+"""
+
+##D
+## p = <k>/(N-1)
+p = 10/(500-1)
+G_2 = rand_network(500,p)
+nx.draw(G_2, node_size = 1, width = 0.1, pos=nx.random_layout(G_2))
+plt.show()
+
+##E
+degrees = [G_2.degree(n) for n in G_2.nodes()]
+plt.hist(degrees)
+plt.show()
+
+##F
+L = G_1.nodes()
+Randomsampleing = random.sample(L, 250)
+G_1.remove_nodes_from(Randomsampleing)
+nx.draw(G_1, node_size = 1, width = 0.1, pos=nx.random_layout(G_1))
+plt.show()
+D =G_1.degree()
+S = 0
+for each in D:
+    S += each[-1]
+Aver = S/G_1.number_of_nodes()
+print("Average degree: ", Aver)
+
+##G
+C = []
+for each in nx.connected_components(G_1):
+    C.append(len(each))
+C.sort(reverse = True)
+print("The largest cluster and second largest cluster' size:",C[0], ",",C[1])
+
+##H
+L = G_2.nodes()
+N = int(500.0*0.7)
+Randomsampleing = random.sample(L, N)
+G_2.remove_nodes_from(Randomsampleing)
+nx.draw(G_2, node_size = 1, width = 0.1, pos=nx.random_layout(G_2))
+plt.show()
+D =G_2.degree()
+S = 0
+for each in D:
+    S += each[-1]
+Aver = S/G_2.number_of_nodes()
+print("Average degree: ", Aver)
+
+##I
+C = []
+for each in nx.connected_components(G_2):
+    C.append(len(each))
+C.sort(reverse = True)
+print("The largest cluster and second largest cluster' size:",C[0], ",",C[1])
 
